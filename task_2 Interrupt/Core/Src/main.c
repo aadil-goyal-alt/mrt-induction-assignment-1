@@ -119,12 +119,12 @@ int main(void)
 	if (isLonely) {
 		if (HAL_GetTick()-last_time < 2000) continue;
 
-		HAL_UART_Transmit_IT(&huart2, Timeout_Str, sizeof(Timeout_Str));
+		HAL_UART_Transmit(&huart2, Timeout_Str, sizeof(Timeout_Str), 1000);
 		last_time = HAL_GetTick();
 	} else {
 		if (HAL_GetTick()-last_time < 5000) continue;
 
-		HAL_UART_Transmit_IT(&huart2, Timeout_Str, sizeof(Timeout_Str));
+		HAL_UART_Transmit(&huart2, Timeout_Str, sizeof(Timeout_Str), 1000);
 
 		isLonely = true;
 		last_time = HAL_GetTick();
@@ -140,7 +140,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     } else if (memcmp(UART_msg, ones, 8) == 0) {
 		HAL_GPIO_WritePin(GPIOC, 13, 0);
 	} else {
-		HAL_UART_Transmit_IT(&huart2, Invalid_Str, sizeof(Invalid_Str));
+		HAL_UART_Transmit(&huart2, Invalid_Str, sizeof(Invalid_Str), 1000);
 	}
 
     HAL_UART_Receive_IT(&huart2, UART_msg, 8);
