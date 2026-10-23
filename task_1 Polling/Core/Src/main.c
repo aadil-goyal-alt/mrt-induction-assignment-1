@@ -43,7 +43,7 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart1;
 
-const uint8_t ones[8] = {1, 1, 1, 1, 1, 1, 1, 1};
+const uint8_t ones[8] = {0, 0, 0, 0, 0, 0, 0, 1};
 const uint8_t zeros[8] = {0};
 
 
