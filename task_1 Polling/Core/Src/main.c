@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,16 +44,13 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart1;
 
-const uint8_t ones[8] = {0, 0, 0, 0, 0, 0, 0, 1};
-const uint8_t zeros[8] = {0};
-
-
-uint8_t UART_msg[8] = {0};
-
+uint8_t UART_msg;
 HAL_StatusTypeDef uart_response;
 
-uint8_t Invalid_Str[] = "Invalid Data!\n";
-uint8_t Timeout_Str[] = "I’m feeling lonely :(\n";
+uint8_t Invalid_Str[] = "Invalid Data!\r\n";
+uint8_t Timeout_Str[] = "I'm feeling lonely :(\n";
+
+bool isLonely = false;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -62,7 +60,6 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
-void ExecuteCommand(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -113,26 +110,33 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	uart_response = HAL_UART_Receive(&huart1, UART_msg, 8, 5000);
-
-	if (uart_response == HAL_OK) {
-		ExecuteCommand();
-		continue;
+	if (isLonely) {
+		uart_response = HAL_UART_Receive(&huart1, &UART_msg, 1, 2000);
+	} else {
+		uart_response = HAL_UART_Receive(&huart1, &UART_msg, 1, 5000);
 	}
 
 	if (uart_response == HAL_TIMEOUT) {
-		while (1) {
-			HAL_UART_Transmit(&huart1, Timeout_Str, sizeof(Timeout_Str), 100);
-			uart_response = HAL_UART_Receive(&huart1, UART_msg, 8, 2000);
-			if (uart_response == HAL_OK) {
-				ExecuteCommand();
-				break;
-			}
-		}
+		HAL_UART_Transmit(&huart1, Timeout_Str, sizeof(Timeout_Str), HAL_MAX_DELAY);
+		isLonely = true;
 		continue;
 	}
 
-	HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), 100);
+	isLonely = false;
+
+	if (uart_response == HAL_OK) {
+		if (UART_msg == '0') {
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+		} else if (UART_msg == '1') {
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+		} else {
+			HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), HAL_MAX_DELAY);
+		}
+
+		continue;
+	}
+
+	HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), HAL_MAX_DELAY);
   }
   /* USER CODE END 3 */
 }
@@ -242,15 +246,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void ExecuteCommand(void) {
-    if (memcmp(UART_msg, zeros, 8) == 0) {
-		HAL_GPIO_WritePin(GPIOC, 13, 1);
-    } else if (memcmp(UART_msg, ones, 8) == 0) {
-		HAL_GPIO_WritePin(GPIOC, 13, 0);
-	} else {
-		HAL_UART_Transmit(&huart1, (uint8_t *)Invalid_Str, sizeof(Invalid_Str), 100);
-	}
-}
 
 /* USER CODE END 4 */
 

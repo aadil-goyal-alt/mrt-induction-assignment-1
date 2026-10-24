@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 task_1\ Polling.list \
 
+OBJCOPY_HEX += \
+task_1\ Polling.hex \
+
+OBJCOPY_BIN += \
+task_1\ Polling.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ task_1\ Polling.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+task_1\ Polling.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "task_1 Polling.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+task_1\ Polling.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "task_1 Polling.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout task_1\ Polling.elf task_1\ Polling.list task_1\ Polling.map task_1\\ Polling.elf
+	-$(RM) default.size.stdout task_1\ Polling.bin task_1\ Polling.elf task_1\ Polling.hex task_1\ Polling.list task_1\ Polling.map task_1\\ Polling.elf
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
