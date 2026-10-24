@@ -48,7 +48,7 @@ uint8_t UART_msg;
 HAL_StatusTypeDef uart_response;
 
 uint8_t Invalid_Str[] = "Invalid Data!\r\n";
-uint8_t Timeout_Str[] = "I'm feeling lonely :(\n";
+uint8_t Timeout_Str[] = "I'm feeling lonely :(\r\n";
 
 bool isLonely = false;
 /* USER CODE BEGIN PV */
@@ -117,7 +117,7 @@ int main(void)
 	}
 
 	if (uart_response == HAL_TIMEOUT) {
-		HAL_UART_Transmit(&huart1, Timeout_Str, sizeof(Timeout_Str), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart1, Timeout_Str, sizeof(Timeout_Str)-1, HAL_MAX_DELAY);
 		isLonely = true;
 		continue;
 	}
@@ -130,13 +130,13 @@ int main(void)
 		} else if (UART_msg == '1') {
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 		} else {
-			HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str)-1, HAL_MAX_DELAY);
 		}
 
 		continue;
 	}
 
-	HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str)-1, HAL_MAX_DELAY);
   }
   /* USER CODE END 3 */
 }

@@ -149,7 +149,7 @@ int main(void)
  8000198:	781b      	ldrb	r3, [r3, #0]
  800019a:	2b03      	cmp	r3, #3
  800019c:	d10a      	bne.n	80001b4 <main+0x68>
-		HAL_UART_Transmit(&huart1, Timeout_Str, sizeof(Timeout_Str), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart1, Timeout_Str, sizeof(Timeout_Str)-1, HAL_MAX_DELAY);
  800019e:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
  80001a2:	2217      	movs	r2, #23
  80001a4:	491e      	ldr	r1, [pc, #120]	@ (8000220 <main+0xd4>)
@@ -185,7 +185,7 @@ int main(void)
  80001d2:	f000 fc8d 	bl	8000af0 <HAL_GPIO_WritePin>
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 		} else {
-			HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str)-1, HAL_MAX_DELAY);
 		}
 
 		continue;
@@ -202,9 +202,9 @@ int main(void)
  80001e8:	f000 fc82 	bl	8000af0 <HAL_GPIO_WritePin>
 		continue;
  80001ec:	e00e      	b.n	800020c <main+0xc0>
-			HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str)-1, HAL_MAX_DELAY);
  80001ee:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
- 80001f2:	2210      	movs	r2, #16
+ 80001f2:	220f      	movs	r2, #15
  80001f4:	490c      	ldr	r1, [pc, #48]	@ (8000228 <main+0xdc>)
  80001f6:	4808      	ldr	r0, [pc, #32]	@ (8000218 <main+0xcc>)
  80001f8:	f001 f8f2 	bl	80013e0 <HAL_UART_Transmit>
@@ -212,9 +212,9 @@ int main(void)
  80001fc:	e006      	b.n	800020c <main+0xc0>
 	}
 
-	HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, Invalid_Str, sizeof(Invalid_Str)-1, HAL_MAX_DELAY);
  80001fe:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
- 8000202:	2210      	movs	r2, #16
+ 8000202:	220f      	movs	r2, #15
  8000204:	4908      	ldr	r1, [pc, #32]	@ (8000228 <main+0xdc>)
  8000206:	4804      	ldr	r0, [pc, #16]	@ (8000218 <main+0xcc>)
  8000208:	f001 f8ea 	bl	80013e0 <HAL_UART_Transmit>

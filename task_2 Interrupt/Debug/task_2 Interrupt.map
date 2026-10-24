@@ -2442,13 +2442,11 @@ LOAD /opt/st/stm32cubeide_2.2.0/plugins/com.st.stm32cube.ide.mcu.externaltools.g
  *(.data)
  *(.data*)
  .data.Invalid_Str
-                0x20000000        0xf ./Core/Src/main.o
+                0x20000000       0x10 ./Core/Src/main.o
                 0x20000000                Invalid_Str
- *fill*         0x2000000f        0x1 
  .data.Timeout_Str
-                0x20000010       0x17 ./Core/Src/main.o
+                0x20000010       0x18 ./Core/Src/main.o
                 0x20000010                Timeout_Str
- *fill*         0x20000027        0x1 
  .data.SystemCoreClock
                 0x20000028        0x4 ./Core/Src/system_stm32f1xx.o
                 0x20000028                SystemCoreClock

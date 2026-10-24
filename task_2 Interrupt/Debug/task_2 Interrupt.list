@@ -140,7 +140,7 @@ int main(void)
  8000188:	f5b3 6ffa 	cmp.w	r3, #2000	@ 0x7d0
  800018c:	d322      	bcc.n	80001d4 <main+0x88>
 
-		HAL_UART_Transmit_IT(&huart1, Timeout_Str, sizeof(Timeout_Str));
+		HAL_UART_Transmit_IT(&huart1, Timeout_Str, sizeof(Timeout_Str)-1);
  800018e:	2217      	movs	r2, #23
  8000190:	4916      	ldr	r1, [pc, #88]	@ (80001ec <main+0xa0>)
  8000192:	4813      	ldr	r0, [pc, #76]	@ (80001e0 <main+0x94>)
@@ -162,7 +162,7 @@ int main(void)
  80001b4:	4293      	cmp	r3, r2
  80001b6:	d90f      	bls.n	80001d8 <main+0x8c>
 
-		HAL_UART_Transmit_IT(&huart1, Timeout_Str, sizeof(Timeout_Str));
+		HAL_UART_Transmit_IT(&huart1, Timeout_Str, sizeof(Timeout_Str)-1);
  80001b8:	2217      	movs	r2, #23
  80001ba:	490c      	ldr	r1, [pc, #48]	@ (80001ec <main+0xa0>)
  80001bc:	4808      	ldr	r0, [pc, #32]	@ (80001e0 <main+0x94>)
@@ -459,7 +459,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
  800036a:	b082      	sub	sp, #8
  800036c:	af00      	add	r7, sp, #0
  800036e:	6078      	str	r0, [r7, #4]
-
 	if (UART_msg == '0') {
  8000370:	4b15      	ldr	r3, [pc, #84]	@ (80003c8 <HAL_UART_RxCpltCallback+0x60>)
  8000372:	781b      	ldrb	r3, [r3, #0]
@@ -483,7 +482,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
  8000396:	f000 fcb7 	bl	8000d08 <HAL_GPIO_WritePin>
  800039a:	e004      	b.n	80003a6 <HAL_UART_RxCpltCallback+0x3e>
 	} else {
-		HAL_UART_Transmit_IT(&huart1, Invalid_Str, sizeof(Invalid_Str));
+		HAL_UART_Transmit_IT(&huart1, Invalid_Str, sizeof(Invalid_Str)-1);
  800039c:	220f      	movs	r2, #15
  800039e:	490c      	ldr	r1, [pc, #48]	@ (80003d0 <HAL_UART_RxCpltCallback+0x68>)
  80003a0:	480c      	ldr	r0, [pc, #48]	@ (80003d4 <HAL_UART_RxCpltCallback+0x6c>)

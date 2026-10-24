@@ -50,8 +50,8 @@ DMA_HandleTypeDef hdma_usart1_tx;
 uint8_t UART_msg;
 HAL_StatusTypeDef uart_response;
 
-uint8_t Invalid_Str[] = "Invalid Data!\n";
-uint8_t Timeout_Str[] = "I'm feeling lonely :(\n";
+uint8_t Invalid_Str[] = "Invalid Data!\r\n";
+uint8_t Timeout_Str[] = "I'm feeling lonely :(\r\n";
 
 uint32_t last_time;
 
@@ -117,13 +117,14 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	if (isLonely) {
 		if (HAL_GetTick()-last_time < 2000) continue;
-		HAL_UART_Transmit_DMA(&huart1, Timeout_Str, sizeof(Timeout_Str));
+
+		HAL_UART_Transmit_DMA(&huart1, Timeout_Str, sizeof(Timeout_Str)-1);
 		last_time = HAL_GetTick();
 	} else {
 		if (HAL_GetTick()-last_time < 5000) continue;
 
 
-		HAL_UART_Transmit_DMA(&huart1, Timeout_Str, sizeof(Timeout_Str));
+		HAL_UART_Transmit_DMA(&huart1, Timeout_Str, sizeof(Timeout_Str)-1);
 		isLonely = true;
 		last_time = HAL_GetTick();
 	}
@@ -262,13 +263,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	} else if (UART_msg == '1') {
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 	} else {
-		HAL_UART_Transmit_DMA(&huart1, Invalid_Str, sizeof(Invalid_Str));
+		HAL_UART_Transmit_DMA(&huart1, Invalid_Str, sizeof(Invalid_Str)-1);
 	}
-
-    HAL_UART_Receive_IT(&huart1, &UART_msg, 1);
 
     last_time = HAL_GetTick();
 	isLonely = false;
+
+    HAL_UART_Receive_IT(&huart1, &UART_msg, 1);
 }
 /* USER CODE END 4 */
 
