@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 task_4\ PWM.list \
 
+OBJCOPY_HEX += \
+task_4\ PWM.hex \
+
+OBJCOPY_BIN += \
+task_4\ PWM.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ task_4\ PWM.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+task_4\ PWM.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "task_4 PWM.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+task_4\ PWM.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "task_4 PWM.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout task_4\ PWM.elf task_4\ PWM.list task_4\ PWM.map task_4\\ PWM.elf
+	-$(RM) default.size.stdout task_4\ PWM.bin task_4\ PWM.elf task_4\ PWM.hex task_4\ PWM.list task_4\ PWM.map task_4\\ PWM.elf
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

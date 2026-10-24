@@ -350,8 +350,8 @@ static void MX_TIM1_Init(void)
     Error_Handler();
  80002b2:	f000 f855 	bl	8000360 <Error_Handler>
   }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
- 80002b6:	2360      	movs	r3, #96	@ 0x60
+  sConfigOC.OCMode = TIM_OCMODE_PWM2;
+ 80002b6:	2370      	movs	r3, #112	@ 0x70
  80002b8:	627b      	str	r3, [r7, #36]	@ 0x24
   sConfigOC.Pulse = 76;
  80002ba:	234c      	movs	r3, #76	@ 0x4c

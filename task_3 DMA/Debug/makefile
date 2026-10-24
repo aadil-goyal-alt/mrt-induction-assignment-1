@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 task_3\ DMA.list \
 
+OBJCOPY_HEX += \
+task_3\ DMA.hex \
+
+OBJCOPY_BIN += \
+task_3\ DMA.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ task_3\ DMA.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+task_3\ DMA.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "task_3 DMA.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+task_3\ DMA.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "task_3 DMA.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout task_3\ DMA.elf task_3\ DMA.list task_3\ DMA.map task_3\\ DMA.elf
+	-$(RM) default.size.stdout task_3\ DMA.bin task_3\ DMA.elf task_3\ DMA.hex task_3\ DMA.list task_3\ DMA.map task_3\\ DMA.elf
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
